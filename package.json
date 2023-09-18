@@ -1,0 +1,44 @@
+{
+  "name": "agilewebapplication",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.1",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-slot": "^1.0.2",
+    "autoprefixer": "10.4.15",
+    "better-sqlite3": "^8.6.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "eslint-config-next": "13.4.19",
+    "knex": "^2.5.1",
+    "lucide-react": "^0.279.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.1",
+    "next": "13.4.19",
+    "oracledb": "^6.1.0",
+    "passport": "^0.6.0",
+    "pg": "^8.11.3",
+    "pg-query-stream": "^4.5.3",
+    "postcss": "8.4.29",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.46.1",
+    "sqlite3": "^5.1.6",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss": "3.3.3",
+    "tailwindcss-animate": "^1.0.7",
+    "tedious": "^16.4.0",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "eslint-plugin-react": "^7.33.2"
+  }
+}
