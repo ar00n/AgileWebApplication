@@ -1,40 +1,37 @@
 "use client"
 
 import {
-ColumnDef,
-ColumnFiltersState,
-SortingState,
-VisibilityState,
-flexRender,
-getCoreRowModel,
-getFilteredRowModel,
-getPaginationRowModel,
-getSortedRowModel,
-useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, Check, ChevronDown, MoreHorizontal, RectangleVertical, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-DropdownMenu,
-DropdownMenuCheckboxItem,
-DropdownMenuContent,
-DropdownMenuItem,
-DropdownMenuLabel,
-DropdownMenuSeparator,
-DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
-Table,
-TableBody,
-TableCell,
-TableHead,
-TableHeader,
-TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table"
 import { useState } from "react"
+import Link from "next/link"
 // import dayjs from "dayjs"
 const dayjs = require('dayjs')
 var relativeTime = require('dayjs/plugin/relativeTime')
@@ -80,15 +77,33 @@ export const columns = [
               </Button>
             )
           },
-        cell: ({ row }) => (
-          <div>{row.getValue("severity")}</div>
-        ),
+        cell: ({ row }) => {
+          const severity = row.getValue("severity")
+          
+          const colors = {
+            1: "red",
+            2: "#FF4800",
+            3: "#FFAD00",
+            4: "#FFD100",
+            5: "#FFE300"
+          }
+
+          function getSevIcons(severity) {
+            let res = [];
+            for (let i = 0; i < severity; i++) {
+              res.push(<RectangleVertical width={20} fill={colors[severity]} stroke={colors[severity]} />)
+            }
+            return res
+          }
+
+          return <div className="flex place-content-center">{getSevIcons(severity)}</div>
+        },
       },
       {
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => (
-          <div>{row.getValue("title")}</div>
+          <div><Link href={`/tickets/${row.getValue("id")}`}><u>{row.getValue("title")}</u></Link></div>
         ),
       },
     {
@@ -136,35 +151,15 @@ export const columns = [
         },
         cell: ({ row }) => <div>{dayjs(row.getValue("created_at")).fromNow()}</div>,
       },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        const payment = row.original
-  
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
-                Copy payment ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+      {
+        accessorKey: "resolved",
+        header: "Resolved",
+        cell: ({ row }) => (
+          row.getValue("resolved")
+          ? <Check stroke="green" />
+          : <X stroke="red" />
+        ),
       },
-    },
   ]
 
 export default function TicketTable({data}) {
@@ -206,9 +201,10 @@ export default function TicketTable({data}) {
             }
             className="max-w-sm"
           />
+          <div className="ml-auto space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button variant="outline">
                 Columns <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -232,6 +228,10 @@ export default function TicketTable({data}) {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <Link href="/tickets/create">
+            <Button variant="secondary">Create</Button>
+          </Link>
+          </div>
         </div>
         <div className="rounded-md border">
           <Table>

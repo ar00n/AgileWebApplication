@@ -4,17 +4,14 @@ import { verifySession } from "./user";
 
 const { knexClient } = require("./database");
 
-export async function getTickets(page, limit) {
+export async function getTickets() {
     if(!(await verifySession()).success) {
         return {success: false, message: "Not logged in."}
     }
 
-    const offset = (page - 1) * limit
-
     try {
         const res = await knexClient.from('tickets')
-            .offset(offset)
-            .limit(limit)
+            .orderBy('created_at', 'desc')
         
         return {success: true, tickets: res}
     } catch (e) {
@@ -58,6 +55,27 @@ export async function createTicket({severity, title, message}) {
             return {success: true, message: 'Ticket created.', ticket: res[0]}
         } else {
             return {success: false, message: 'Failed to create ticket.'}
+        }
+    } catch (e) {
+        return {success: false, message: e.message}
+    }
+}
+
+export async function setResolved(id, resolved) {
+    if(!(await verifySession()).success) {
+        return {success: false, message: "Not logged in."}
+    }
+
+    try {
+        const res = await knexClient.from('tickets')
+            .where({id: id})
+            .first()
+            .update({resolved: resolved})
+
+        if (!res) {
+            return {success: false, message: "Ticket not found."}
+        } else {
+            return {success: true}
         }
     } catch (e) {
         return {success: false, message: e.message}

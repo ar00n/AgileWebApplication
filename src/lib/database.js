@@ -33,10 +33,11 @@ async function createTables() {
                 table.string('assignee')
                 table.string('title').notNullable()
                 table.string('message').notNullable()
+                table.boolean('resolved')
                 table.timestamp('created_at').notNullable();
             })
         
-        await knexClient('users').insert({ username: 'aaron', password: 'bob12345678' });
+        await knexClient('users').insert({ username: 'aaron', name: "Aaron S", password: 'bob12345678' });
     } catch (e) {
         if (e.message.includes('already exists')) {
             console.log("Database file already exists.")
