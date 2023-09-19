@@ -14,32 +14,29 @@ async function createTables() {
     try {
         await knexClient.schema
             .createTable('users', (table) => {
-                table.string('username').unique().primary();
-                table.string('name')
-                table.string('password');
+                table.string('username').notNullable().unique().primary();
+                table.string('name').notNullable()
+                table.string('password').notNullable();
             })
             .createTable('user_sessions', (table) => {
-                table.string('username')
+                table.string('username').notNullable()
                 table.foreign('username').references('users.username');
-                table.string('token');
-                table.timestamp('created_at');
-                table.timestamp('expires_at');
+                table.string('token').notNullable().unique();
+                table.timestamp('created_at').notNullable();
+                table.timestamp('expires_at').notNullable();
             })
             .createTable('tickets', (table) => {
                 table.increments('id').primary()
-                table.integer('severity');
+                table.integer('severity').notNullable();
                 table.string('requester').notNullable()
                 table.foreign('requester').references('users.username');
                 table.string('assignee')
-                table.string('title')
-                table.string('message')
-
-                table.timestamp('created_at');
+                table.string('title').notNullable()
+                table.string('message').notNullable()
+                table.timestamp('created_at').notNullable();
             })
         
         await knexClient('users').insert({ username: 'aaron', password: 'bob12345678' });
-        
-        console.log("hi?")
     } catch (e) {
         if (e.message.includes('already exists')) {
             console.log("Database file already exists.")

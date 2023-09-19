@@ -43,52 +43,54 @@ export default function LoginForm () {
         const res = await login(values.username, values.password)
         setResult(res)
         if (res.success) {
-            setTimeout(() => router.push('/'), 2000) 
+            setTimeout(() => window.location.href = '/', 1500) 
         }
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                        <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                        This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                        <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                        This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                {
-                    result.success != null ?
-                    <Alert variant={result.success ? 'success' : 'destructive'}>{result.message}</Alert>
-                    : ''
-                }
-                <Button type="submit">Submit</Button>
-            </form>
-        </Form>
+        <div className='p-6'>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                            <Input placeholder="shadcn" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                            This is your public display name.
+                        </FormDescription>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                            <Input placeholder="shadcn" {...field} />
+                        </FormControl>
+                        <FormDescription>
+                            This is your public display name.
+                        </FormDescription>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    {
+                        result.success != null ?
+                        <Alert variant={result.success ? 'success' : 'destructive'}>{result.message}</Alert>
+                        : ''
+                    }
+                    <Button type="submit">Submit</Button>
+                </form>
+            </Form>
+        </div>
     )
 }
