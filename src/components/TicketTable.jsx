@@ -96,7 +96,7 @@ export const columns = [
           </Button>
         )
       },
-      cell: ({ row }) => <div><a href={`/user/${row.getValue("requester")}`}>@{row.getValue("requester")}</a></div>,
+      cell: ({ row }) => <div>{row.getValue("requester") ? <a href={`/user/${row.getValue("requester")}`}>{`@${row.getValue("requester")}`}</a> : 'N/A'}</div>,
     },
     {
         accessorKey: "assignee",
@@ -111,7 +111,7 @@ export const columns = [
             </Button>
           )
         },
-        cell: ({ row }) => <div><a href={`/user/${row.getValue("assignee")}`}>{row.getValue("assignee") ? `@${row.getValue("assignee")}` : 'N/A'}</a></div>,
+        cell: ({ row }) => <div>{row.getValue("assignee") ? <a href={`/user/${row.getValue("assignee")}`}>{`@${row.getValue("assignee")}`}</a> : 'N/A'}</div>,
       },
       {
         accessorKey: "created_at",

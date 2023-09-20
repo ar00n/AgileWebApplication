@@ -80,7 +80,7 @@ export default function Navbar() {
                         pages.map(page =>
                             <NavigationMenuItem key={page.href}>
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()} href={page.href}>
-                                        <span className={page.href == pathname ? ' text-black' : ' text-gray-400 hover:text-black'}>
+                                        <span className={pathname.includes(page.href) ? ' text-black' : ' text-gray-400 hover:text-black'}>
                                             {page.name}
                                         </span>
                                     </NavigationMenuLink>

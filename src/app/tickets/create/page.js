@@ -11,16 +11,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from '@/components/ui/input'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getSessionUser } from '@/lib/user'
 import { Slider } from '@/components/ui/slider'
 import { Textarea } from '@/components/ui/textarea'
 import { createTicket } from '@/lib/tickets'
-import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import AlertBox from '@/components/AlertBox'
  
 const formSchema = z.object({
-  title: z.string().min(0).max(32),
+  title: z.string().min(1).max(32),
   severity: z.number().min(1).max(5),
   message: z.string().min(0).max(512)
 })

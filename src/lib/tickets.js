@@ -65,6 +65,38 @@ export async function createTicket({severity, title, message}) {
     }
 }
 
+export async function editTicket(id, values) {
+    const { success: sessionCheck } = await getSessionUser()
+    if (!sessionCheck) {
+        return {success: false, message: "Not logged in."}
+    }
+
+    try {
+        await getUser(values.requester)
+    } catch (e) {
+        return {success: false, message: e.message}
+    }
+
+    try {
+        const res = await knexClient('tickets')
+            .where({id: id})
+            .update({
+                severity: values.severity,
+                requester: values.requester,
+                title: values.title,
+                message: values.message
+            })
+
+        if (res) {
+            return {success: true, message: 'Ticket modified.', ticket: res[0]}
+        } else {
+            return {success: false, message: 'Failed to create ticket.'}
+        }
+    } catch (e) {
+        return {success: false, message: e.message}
+    }
+}
+
 export async function deleteTicket(id) {
     if(!(await getSessionUser())?.isAdmin) {
         return {success: false, message: "Only admins can delete tickets."}

@@ -6,6 +6,7 @@ import { useState } from "react";
 import AlertBox from "./AlertBox";
 import ShowAdmin from "./ShowAdmin";
 import DestructiveConfirm from "./DestructiveConfirm";
+import TicketEditor from "./TicketEditor";
 
 export default function TicketButtons({data}) {
     const [result, setResult] = useState()
@@ -37,7 +38,7 @@ export default function TicketButtons({data}) {
                 ? <Button onClick={() => handleResolve(false)}>Un-resolve</Button>
                 : <Button onClick={() => handleResolve(true)}>Resolve</Button>
             }
-            <Button className="ml-1">Edit</Button>
+            <TicketEditor ticket={data.ticket} className="ml-1" />
             <ShowAdmin>
                 <DestructiveConfirm className="ml-auto" action="delete this ticket." onConfirmClick={() => handleDelete()}>
                     <Button variant="destructive">Delete</Button>
