@@ -23,7 +23,7 @@ async function createTables() {
             .createTable('user_sessions', (table) => {
                 table.string('username').notNullable()
                 table.foreign('username').references('users.username');
-                table.string('token').notNullable().unique();
+                table.string('token').notNullable().unique().primary();
                 table.timestamp('created_at').notNullable();
                 table.timestamp('expires_at').notNullable();
             })

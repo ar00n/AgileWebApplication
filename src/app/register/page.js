@@ -8,18 +8,19 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from '@/components/ui/input'
-import { login, getSessionUser } from '@/lib/user'
+import { login, getSessionUser, register } from '@/lib/user'
 import AlertBox from '@/components/AlertBox'
  
 const formSchema = z.object({
   username: z.string().min(2).max(32),
+  name: z.string().min(2).max(32),
   password: z.string().min(8).max(32)
 })
 
-export default function LoginForm () {
+export default function RegisterForm () {
     const [result, setResult] = useState()
     const router = useRouter();
 
@@ -35,15 +36,16 @@ export default function LoginForm () {
         resolver: zodResolver(formSchema),
         defaultValues: {
           username: "",
+          name: "",
           password: ""
         },
     })
 
     async function onSubmit(values) {
-        const res = await login(values.username, values.password)
+        const res = await register(values.username, values.name, values.password)
         setResult(res)
         if (res.success) {
-            setTimeout(() => window.location.href = '/', 1500) 
+            setTimeout(() => window.location.href = '/login', 1500) 
         }
     }
 
@@ -58,7 +60,20 @@ export default function LoginForm () {
                         <FormItem>
                         <FormLabel>Username</FormLabel>
                         <FormControl>
-                            <Input {...field} />
+                            <Input placeholder="jdoe" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                            <Input placeholder="John Doe" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -71,7 +86,7 @@ export default function LoginForm () {
                         <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                            <Input type="password" {...field} />
+                            <Input type="password" placeholder="" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -82,7 +97,7 @@ export default function LoginForm () {
                         <AlertBox result={result} />
                         : ''
                     }
-                    <Button type="submit">Login</Button>
+                    <Button type="submit">Register</Button>
                 </form>
             </Form>
         </div>

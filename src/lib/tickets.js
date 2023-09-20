@@ -24,14 +24,18 @@ export async function getTicket(id) {
         return {success: false, message: "Not logged in."}
     }
 
-    const res = await knexClient.from('tickets')
-        .where({id: id})
-        .first()
+    try {
+        const res = await knexClient.from('tickets')
+            .where({id: id})
+            .first()
 
-    if (!res) {
-        return {success: false, message: "Ticket not found."}
-    } else {
-        return {success: true, ticket: res}
+        if (!res) {
+            return {success: false, message: "Ticket not found."}
+        } else {
+            return {success: true, ticket: res}
+        }
+    } catch (e) {
+        return {success: false, message: e.message}
     }
 }
 
@@ -108,10 +112,12 @@ export async function setAssignee(id, assignee) {
         return {success: false, message: "Not logged in."}
     }
 
-    try {
-        await getUser(assignee)
-    } catch (e) {
-        return {success: false, message: e.message}
+    if (assignee !== null) {
+        try {
+            await getUser(assignee)
+        } catch (e) {
+            return {success: false, message: e.message}
+        }
     }
 
     try {
@@ -129,29 +135,3 @@ export async function setAssignee(id, assignee) {
         return {success: false, message: e.message}
     }
 }
-
-// export async function deleteTicket(id) {
-//     const { success: sessionCheck, username } = await verifySession()
-//     if (!sessionCheck) {
-//         return {success: false, message: "Not logged in."}
-//     }
-
-//     try {
-//         const res = await knexClient('tickets')
-//             .insert({
-//                 severity: severity,
-//                 requester: username,
-//                 title: title,
-//                 message: message,
-//                 created_at: Date.now()
-//             })
-
-//         if (res) {
-//             return {success: true, message: 'Ticket created.', ticket: res[0]}
-//         } else {
-//             return {success: false, message: 'Failed to create ticket.'}
-//         }
-//     } catch (e) {
-//         return {success: false, message: e.message}
-//     }
-// }

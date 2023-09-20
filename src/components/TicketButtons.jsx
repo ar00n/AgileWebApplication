@@ -8,14 +8,13 @@ import ShowAdmin from "./ShowAdmin";
 import DestructiveConfirm from "./DestructiveConfirm";
 
 export default function TicketButtons({data}) {
-    const [resolvedState, setResolvedState] = useState(data.ticket.resolved)
     const [result, setResult] = useState()
 
     async function handleResolve(resolved) {
         const res = await setResolved(data.ticket.id, resolved)
 
         if (res.success) {
-            setResolvedState(resolved)
+            location.reload()
         } else {
             setResult(res)
         }
@@ -34,7 +33,7 @@ export default function TicketButtons({data}) {
         <>
         <div className="pt-2 flex px-1">
             {
-                resolvedState
+                data.ticket.resolved
                 ? <Button onClick={() => handleResolve(false)}>Un-resolve</Button>
                 : <Button onClick={() => handleResolve(true)}>Resolve</Button>
             }

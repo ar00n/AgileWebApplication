@@ -76,7 +76,7 @@ export default function CreateTicketForm () {
                         <FormItem>
                             <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="Title" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -105,7 +105,7 @@ export default function CreateTicketForm () {
                         <FormItem>
                             <FormLabel>Message</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="shadcn" {...field} />
+                                <Textarea placeholder="Message" {...field} />
                             </FormControl>
                             <FormDescription>
                                 This is your public display name.

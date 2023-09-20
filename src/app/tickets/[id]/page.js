@@ -27,7 +27,7 @@ export default async function TicketView ({ params }) {
                     ? <><Check stroke="green" /><p className="text-green-600">Resolved</p></>
                     : <><X stroke="red" /><p className="text-red-500">Unresolved</p></>
                 }
-                <Link href="/tickets" className="flex text-xs items-end ml-auto">view all tickets<CornerRightUp size={18} /></Link>
+                <a href="/tickets" className="flex text-xs items-end ml-auto">view all tickets<CornerRightUp size={18} /></a>
             </div>
             <div className="mt-2 max-w-2xl grid sm:grid-cols-3 sm:border border-gray-300 rounded-lg shadow-lg">
                 <div className="p-4 col-span-2">

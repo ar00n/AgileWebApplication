@@ -8,17 +8,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Check, ChevronDown, MoreHorizontal, RectangleVertical, X } from "lucide-react"
+import { ArrowUpDown, Check, ChevronDown, RectangleVertical, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -84,7 +80,7 @@ export const columns = [
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => (
-          <div><Link href={`/tickets/${row.getValue("id")}`}><u>{row.getValue("title")}</u></Link></div>
+          <div><a href={`/tickets/${row.getValue("id")}`}><u>{row.getValue("title")}</u></a></div>
         ),
       },
     {
@@ -100,7 +96,7 @@ export const columns = [
           </Button>
         )
       },
-      cell: ({ row }) => <div>{row.getValue("requester")}</div>,
+      cell: ({ row }) => <div><a href={`/user/${row.getValue("requester")}`}>@{row.getValue("requester")}</a></div>,
     },
     {
         accessorKey: "assignee",
@@ -115,10 +111,11 @@ export const columns = [
             </Button>
           )
         },
-        cell: ({ row }) => <div>{row.getValue("assignee")}</div>,
+        cell: ({ row }) => <div><a href={`/user/${row.getValue("assignee")}`}>{row.getValue("assignee") ? `@${row.getValue("assignee")}` : 'N/A'}</a></div>,
       },
       {
         accessorKey: "created_at",
+        id: "age",
         header: ({ column }) => {
           return (
             <Button
@@ -130,7 +127,7 @@ export const columns = [
             </Button>
           )
         },
-        cell: ({ row }) => <div>{dayjs(row.getValue("created_at")).fromNow()}</div>,
+        cell: ({ row }) => <div>{dayjs(row.getValue("age")).fromNow()}</div>,
       },
       {
         accessorKey: "resolved",
@@ -236,7 +233,6 @@ export default function TicketTable({data}) {
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -262,10 +258,6 @@ export default function TicketTable({data}) {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
           <div className="space-x-2">
             <Button
               variant="outline"

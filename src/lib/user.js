@@ -19,6 +19,38 @@ export async function getUser(username) {
     return res
 }
 
+export async function getUserProfile(username) {
+    try {
+        const res = await knexClient.from('users')
+            .where('username', username)
+            .select('username', 'name', 'is_admin')
+            .first()
+
+        if(!res) {
+            return {success: false, message: "User does not exist."}
+        }
+
+        return {success: true, user: res}
+    } catch (e) {
+        return {success: false, message: e.message}
+    }
+}
+
+export async function getUserProfiles() {
+    try {
+        const res = await knexClient.from('users')
+            .select('username', 'name', 'is_admin')
+
+        if(!res) {
+            return {success: false, message: "Users do not exist."}
+        }
+
+        return {success: true, users: res}
+    } catch (e) {
+        return {success: false, message: e.message}
+    }
+}
+
 export async function login(username, password) {
     let user;
     try {
@@ -32,6 +64,24 @@ export async function login(username, password) {
         return {success: true, message: 'Successful login.'}
     } else {
         return {success: false, message: 'Incorrect password.'}
+    }
+}
+
+export async function register(username, name, password) {
+    try {
+        await knexClient('users')
+            .insert({
+                username: username,
+                name: name,
+                password: password,
+            })
+
+        return {success: true, message: "Account created."}
+    } catch (e) {
+        if (e.code == "SQLITE_CONSTRAINT")
+            return {success: false, message: "Username already exists."}
+
+        return {success: false, message: e.code}
     }
 }
 
@@ -56,7 +106,7 @@ export async function logout() {
     }
 }
 
-export async function createSession(username) {
+async function createSession(username) {
     const token = crypto.randomBytes(128).toString('hex');
 
     const oneDay = 24 * 60 * 60 * 1000
@@ -82,8 +132,8 @@ export async function getSessionUser() {
 
     if (username && token) {
         const res = await knexClient.from('user_sessions')
-            .where('user_sessions.username', username.value)
             .where('user_sessions.token', token.value)
+            .where('user_sessions.username', username.value)
             .join('users', {'user_sessions.username': 'users.username'})
 
             .first()
@@ -99,5 +149,30 @@ export async function getSessionUser() {
         }
     } else {
         return {success: false, message: "No session cookies found."}
+    }
+}
+
+export async function setAdmin(username, admin) {
+    if(!(await getSessionUser())?.isAdmin) {
+        return {success: false, message: "Only admins can set roles."}
+    }
+
+    try {
+        const res = await knexClient.from('users')
+            .where({username: username})
+            .first()
+            .update({is_admin: admin})
+
+        console.log(username)
+        console.log(admin)
+        console.log(res)
+
+        if (!res) {
+            return {success: false, message: "User not found."}
+        } else {
+            return {success: true}
+        }
+    } catch (e) {
+        return {success: false, message: e.message}
     }
 }

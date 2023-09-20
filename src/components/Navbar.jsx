@@ -25,6 +25,10 @@ const pages = [
         name: "Tickets",
         href: "/tickets"
     },
+    {
+        name: "Users",
+        href: "/user"
+    },
 ]
 
 function UserSection() {
@@ -68,7 +72,7 @@ export default function Navbar() {
     const pathname = usePathname()
 
     return (
-        <div className="p-2 w-full shadow-lg flex list-none">
+        <div className="p-2 w-full shadow-lg flex list-none bg-white text-black">
             <div>
                 <NavigationMenu>
                     <h1 className="text-xl mr-6 border border-gray-400 rounded-md p-2">TicketCut</h1>
