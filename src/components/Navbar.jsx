@@ -11,7 +11,7 @@ import {
     navigationMenuTriggerStyle
   } from "@/components/ui/navigation-menu"
 import { usePathname } from "next/navigation"
-import { logout, verifySession } from "@/lib/user"
+import { logout, getSessionUser } from "@/lib/user"
 import { useEffect, useState } from "react"
 import { User } from "lucide-react"
 import { Button } from "./ui/button"
@@ -32,7 +32,7 @@ function UserSection() {
 
     useEffect(() => {
         if (userResult.success == null) {
-            verifySession().then(res => setUserResult(res))
+            getSessionUser().then(res => setUserResult(res))
         }
     }, []);
     
@@ -75,13 +75,11 @@ export default function Navbar() {
                     {
                         pages.map(page =>
                             <NavigationMenuItem key={page.href}>
-                                <Link href={page.href} legacyBehavior passHref>
-                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()} href={page.href}>
                                         <span className={page.href == pathname ? ' text-black' : ' text-gray-400 hover:text-black'}>
                                             {page.name}
                                         </span>
                                     </NavigationMenuLink>
-                                </Link>
                             </NavigationMenuItem>
                         )
                     }

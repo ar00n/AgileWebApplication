@@ -39,25 +39,6 @@ dayjs.extend(relativeTime)
 
 export const columns = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
       accessorKey: "id",
       header: "ID",
       cell: ({ row }) => (
@@ -169,7 +150,6 @@ export default function TicketTable({data}) {
     )
     const [columnVisibility, setColumnVisibility] =
       useState({})
-    const [rowSelection, setRowSelection] = useState({})
   
     const table = useReactTable({
       data,
@@ -181,12 +161,10 @@ export default function TicketTable({data}) {
       getSortedRowModel: getSortedRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
       onColumnVisibilityChange: setColumnVisibility,
-      onRowSelectionChange: setRowSelection,
       state: {
         sorting,
         columnFilters,
         columnVisibility,
-        rowSelection,
       },
     })
   

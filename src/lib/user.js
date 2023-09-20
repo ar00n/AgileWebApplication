@@ -75,15 +75,17 @@ export async function createSession(username) {
     cookies().set('session_token', token, {expires: expires })
 }
 
-export async function verifySession() {
+export async function getSessionUser() {
     const cookieStore = cookies()
     const username = cookieStore.get('session_username')
     const token = cookieStore.get('session_token')
 
     if (username && token) {
         const res = await knexClient.from('user_sessions')
-            .where('username', username.value)
-            .where('token', token.value)
+            .where('user_sessions.username', username.value)
+            .where('user_sessions.token', token.value)
+            .join('users', {'user_sessions.username': 'users.username'})
+
             .first()
 
         if (!res) {
@@ -93,7 +95,7 @@ export async function verifySession() {
         if (Date.now() > res.expires_at) {
             return {success: false, message: "User session has expired."}
         } else {
-            return {success: true, message: "User session is valid.", username: res.username}
+            return {success: true, message: "User session is valid.", username: res.username, isAdmin: res.is_admin}
         }
     } else {
         return {success: false, message: "No session cookies found."}

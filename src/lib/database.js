@@ -7,6 +7,7 @@ export const knexClient = Knex({
     connection: {
       filename: './data.db',
     },
+    useNullAsDefault: true
   });
 
 async function createTables() {
@@ -17,6 +18,7 @@ async function createTables() {
                 table.string('username').notNullable().unique().primary();
                 table.string('name').notNullable()
                 table.string('password').notNullable();
+                table.boolean('is_admin').defaultTo(false)
             })
             .createTable('user_sessions', (table) => {
                 table.string('username').notNullable()
@@ -27,17 +29,18 @@ async function createTables() {
             })
             .createTable('tickets', (table) => {
                 table.increments('id').primary()
-                table.integer('severity').notNullable();
+                table.integer('severity').notNullable()
                 table.string('requester').notNullable()
-                table.foreign('requester').references('users.username');
+                table.foreign('requester').references('users.username')
                 table.string('assignee')
+                table.foreign('assignee').references('users.username')
                 table.string('title').notNullable()
                 table.string('message').notNullable()
-                table.boolean('resolved')
-                table.timestamp('created_at').notNullable();
+                table.boolean('resolved').defaultTo(false)
+                table.timestamp('created_at').notNullable()
             })
         
-        await knexClient('users').insert({ username: 'aaron', name: "Aaron S", password: 'bob12345678' });
+        await knexClient('users').insert({ username: 'aaron', name: "Aaron S", password: 'bob12345678', is_admin: true });
     } catch (e) {
         if (e.message.includes('already exists')) {
             console.log("Database file already exists.")

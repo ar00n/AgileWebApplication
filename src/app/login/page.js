@@ -12,7 +12,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Button } from "@/components/ui/button"
 import { Input } from '@/components/ui/input'
 import { Alert } from '@/components/ui/alert'
-import { login, verifySession } from '@/lib/user'
+import { login, getSessionUser } from '@/lib/user'
+import AlertBox from '@/components/AlertBox'
  
 const formSchema = z.object({
   username: z.string().min(2).max(32),
@@ -20,11 +21,11 @@ const formSchema = z.object({
 })
 
 export default function LoginForm () {
-    const [result, setResult] = useState({})
+    const [result, setResult] = useState()
     const router = useRouter();
 
     useEffect(() => {
-        verifySession().then(res => {
+        getSessionUser().then(res => {
             if (res.success) {
                 router.push('/')
             }
@@ -84,8 +85,8 @@ export default function LoginForm () {
                     )}
                     />
                     {
-                        result.success != null ?
-                        <Alert variant={result.success ? 'success' : 'destructive'}>{result.message}</Alert>
+                        result ?
+                        <AlertBox result={result} />
                         : ''
                     }
                     <Button type="submit">Submit</Button>
