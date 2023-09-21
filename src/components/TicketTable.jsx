@@ -68,7 +68,7 @@ export const columns = [
           function getSevIcons(severity) {
             let res = [];
             for (let i = 0; i < severity; i++) {
-              res.push(<RectangleVertical width={20} fill={colors[severity]} stroke={colors[severity]} />)
+              res.push(<RectangleVertical key={i} width={20} fill={colors[severity]} stroke={colors[severity]} />)
             }
             return res
           }
@@ -96,7 +96,7 @@ export const columns = [
           </Button>
         )
       },
-      cell: ({ row }) => <div>{row.getValue("requester") ? <a href={`/user/${row.getValue("requester")}`}>{`@${row.getValue("requester")}`}</a> : 'N/A'}</div>,
+      cell: ({ row }) => <div>{row.getValue("requester") ? <a href={`/users/${row.getValue("requester")}`}>{`@${row.getValue("requester")}`}</a> : 'N/A'}</div>,
     },
     {
         accessorKey: "assignee",
@@ -111,7 +111,7 @@ export const columns = [
             </Button>
           )
         },
-        cell: ({ row }) => <div>{row.getValue("assignee") ? <a href={`/user/${row.getValue("assignee")}`}>{`@${row.getValue("assignee")}`}</a> : 'N/A'}</div>,
+        cell: ({ row }) => <div>{row.getValue("assignee") ? <a href={`/users/${row.getValue("assignee")}`}>{`@${row.getValue("assignee")}`}</a> : 'N/A'}</div>,
       },
       {
         accessorKey: "created_at",

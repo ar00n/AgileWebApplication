@@ -27,7 +27,7 @@ const pages = [
     },
     {
         name: "Users",
-        href: "/user"
+        href: "/users"
     },
 ]
 
@@ -38,6 +38,7 @@ function UserSection() {
         if (userResult.success == null) {
             getSessionUser().then(res => setUserResult(res))
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
 

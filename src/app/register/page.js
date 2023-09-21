@@ -2,8 +2,6 @@
  
 import React, { useEffect, useState } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -11,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from '@/components/ui/input'
-import { login, getSessionUser, register } from '@/lib/user'
+import { getSessionUser, register } from '@/lib/user'
 import AlertBox from '@/components/AlertBox'
  
 const formSchema = z.object({
@@ -22,14 +20,16 @@ const formSchema = z.object({
 
 export default function RegisterForm () {
     const [result, setResult] = useState()
-    const router = useRouter();
+    const [loggedIn, setLoggedIn] = useState()
 
     useEffect(() => {
         getSessionUser().then(res => {
+            setLoggedIn(res.success)
             if (res.success) {
-                router.push('/')
+                setTimeout(() => window.location.href = '/', 1500) 
             }
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const form = useForm({
@@ -49,8 +49,15 @@ export default function RegisterForm () {
         }
     }
 
-    return (
-        <div className='p-6'>
+    if(loggedIn === undefined) {
+        return
+    }
+
+    return loggedIn
+        ? <div className="absolute w-full grid place-content-center">
+                <AlertBox result={{success: false, message: "Already logged in."}} />
+            </div>
+        : <div className='p-6'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -101,5 +108,4 @@ export default function RegisterForm () {
                 </form>
             </Form>
         </div>
-    )
 }

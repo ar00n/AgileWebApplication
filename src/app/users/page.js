@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import AlertBox from "@/components/AlertBox"
 import UserTable from "@/components/UserTable"
 import { getUserProfiles } from "@/lib/user"

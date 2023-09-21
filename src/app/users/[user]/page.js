@@ -24,7 +24,7 @@ export default async function UserProfile({params}) {
                     ? <><Check stroke="green" /><p className="text-green-600">Resolved</p></>
                     : <><X stroke="red" /><p className="text-red-500">Unresolved</p></>
                 } */}
-                <a href="/user" className="flex text-xs items-end ml-auto">view all users<CornerRightUp size={18} /></a>
+                <a href="/users" className="flex text-xs items-end ml-auto">view all users<CornerRightUp size={18} /></a>
             </div>
             <div className="mt-2 max-w-2xl grid sm:grid-cols-3 sm:border border-gray-300 rounded-lg shadow-lg">
                 <div className="p-4 col-span-2">

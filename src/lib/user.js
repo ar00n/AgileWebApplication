@@ -20,6 +20,10 @@ export async function getUser(username) {
 }
 
 export async function getUserProfile(username) {
+    if(!(await getSessionUser()).success) {
+        return {success: false, message: "Not logged in."}
+    }
+
     try {
         const res = await knexClient.from('users')
             .where('username', username)
@@ -37,6 +41,10 @@ export async function getUserProfile(username) {
 }
 
 export async function getUserProfiles() {
+    if(!(await getSessionUser()).success) {
+        return {success: false, message: "Not logged in."}
+    }
+
     try {
         const res = await knexClient.from('users')
             .select('username', 'name', 'is_admin')
@@ -99,7 +107,10 @@ export async function logout() {
         if (!res) {
             return {success: false, message: "User session does not exist."}
         }
-        
+
+        cookies().delete('session_username')
+        cookies().delete('session_token')
+
         return {success: true, message: "Logged out."}
     } else {
         return {success: false, message: "No session cookies found."}
@@ -162,10 +173,6 @@ export async function setAdmin(username, admin) {
             .where({username: username})
             .first()
             .update({is_admin: admin})
-
-        console.log(username)
-        console.log(admin)
-        console.log(res)
 
         if (!res) {
             return {success: false, message: "User not found."}

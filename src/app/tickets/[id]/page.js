@@ -3,7 +3,6 @@ import AlertBox from "@/components/AlertBox"
 import TicketButtons from "@/components/TicketButtons"
 import { getTicket } from "@/lib/tickets"
 import { Check, CornerRightUp, X } from "lucide-react"
-import Link from "next/link"
 const dayjs = require('dayjs')
 var localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)

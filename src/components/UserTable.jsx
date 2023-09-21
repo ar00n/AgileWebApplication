@@ -8,7 +8,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Check, ChevronDown, RectangleVertical, ShieldCheck, User, X } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ShieldCheck, User } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -49,7 +49,7 @@ export const columns = [
         )
       },
       cell: ({ row }) => (
-        <div><a href={`/user/${row.getValue("username")}`}>{row.getValue("name")}</a></div>
+        <div><a href={`/users/${row.getValue("username")}`}>{row.getValue("name")}</a></div>
       ),
     },
     {
@@ -66,7 +66,7 @@ export const columns = [
           )
         },
         cell: ({ row }) => (
-          <div><a href={`/user/${row.getValue("username")}`}>@{row.getValue("username")}</a></div>
+          <div><a href={`/users/${row.getValue("username")}`}>@{row.getValue("username")}</a></div>
         ),
       },
       {
@@ -109,6 +109,8 @@ export default function UserTable({data}) {
     )
     const [columnVisibility, setColumnVisibility] =
       useState({})
+
+    console.log(data)
   
     const table = useReactTable({
       data,
