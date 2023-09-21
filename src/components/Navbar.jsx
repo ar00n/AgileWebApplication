@@ -46,6 +46,7 @@ function UserSection() {
         const res = await logout()
 
         if (res.success) {
+            setUserResult({})
             setTimeout(() => window.location.href = '/', 1500) 
         }
     }

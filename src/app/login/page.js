@@ -51,7 +51,7 @@ export default function LoginForm () {
         return
     }
 
-    return loggedIn
+    return loggedIn && result == null
             ? <div className="absolute w-full grid place-content-center">
                 <AlertBox result={{success: false, message: "Already logged in."}} />
                 </div>

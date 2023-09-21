@@ -29,7 +29,6 @@ export default function AssigneeEdit({ticketId, assignee}) {
     })
 
     async function onSubmit(values) {
-        console.log(values)
         const res = await setAssignee(ticketId, values.assignee)
         if(res.success) {
             setDisplayedAssignee(values.assignee)

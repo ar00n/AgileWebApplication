@@ -109,8 +109,6 @@ export default function UserTable({data}) {
     )
     const [columnVisibility, setColumnVisibility] =
       useState({})
-
-    console.log(data)
   
     const table = useReactTable({
       data,
@@ -134,10 +132,10 @@ export default function UserTable({data}) {
         <div className="p-6 max-w-max place-self-center">
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filter title..."
-              value={(table.getColumn("title")?.getFilterValue()) ?? ""}
+              placeholder="Filter name..."
+              value={(table.getColumn("name")?.getFilterValue()) ?? ""}
               onChange={(event) =>
-                table.getColumn("title")?.setFilterValue(event.target.value)
+                table.getColumn("name")?.setFilterValue(event.target.value)
               }
               className="max-w-sm"
             />
@@ -168,9 +166,6 @@ export default function UserTable({data}) {
                     })}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Link href="/tickets/create">
-                <Button variant="secondary">Create</Button>
-              </Link>
             </div>
           </div>
           <div className="rounded-md border">
