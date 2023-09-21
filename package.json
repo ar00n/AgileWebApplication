@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.6",
     "@tanstack/react-table": "^8.10.0",
+    "argon2": "^0.31.1",
     "autoprefixer": "10.4.16",
     "better-sqlite3": "^8.6.0",
     "class-variance-authority": "^0.7.0",

@@ -1,5 +1,6 @@
 'use server'
 
+const argon2 = require('argon2');
 var crypto = require("crypto");
 
 import { cookies } from 'next/headers'
@@ -9,7 +10,7 @@ const { knexClient } = require("./database");
 export async function getUser(username) {
     const res = await knexClient.from('users')
         .where('username', username)
-        .select('username', 'password')
+        .select('username', 'passwordHash')
         .first()
 
     if(res == null) {
@@ -63,15 +64,15 @@ export async function login(username, password) {
     let user;
     try {
         user = await getUser(username)
+
+        if (await argon2.verify(user.passwordHash, password)) {
+            await createSession(user.username)
+            return {success: true, message: 'Successful login.'}
+        } else {
+            return {success: false, message: 'Incorrect password.'}
+        }
     } catch (e) {
         return {success: false, message: e.message}
-    }
-
-    if (password === user.password) {
-        await createSession(user.username)
-        return {success: true, message: 'Successful login.'}
-    } else {
-        return {success: false, message: 'Incorrect password.'}
     }
 }
 
@@ -81,7 +82,7 @@ export async function register(username, name, password) {
             .insert({
                 username: username,
                 name: name,
-                password: password,
+                passwordHash: await argon2.hash(password),
             })
 
         return {success: true, message: "Account created."}

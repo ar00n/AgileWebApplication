@@ -1,4 +1,5 @@
 const LoremIpsum = require("lorem-ipsum").LoremIpsum
+const argon2 = require('argon2');
 
 var knexClient = require('knex')({
     client: 'sqlite3',
@@ -19,32 +20,39 @@ const lorem = new LoremIpsum({
     }
 });
 
-const users = [
-    { username: 'aaron', name: "Aaron S", password: 'q584NcNFrMSzT7', is_admin: true },
-    { username: 'john', name: "John Led", password: '3LLt7b2uiCNRUB', is_admin: true },
-    { username: 'davidf', name: "David Finder", password: 'bzQPH49gKXZSAN', is_admin: false },
-    { username: 'alfied', name: "Alfie Dops", password: 'PtPRy9njx3imGP', is_admin: false },
-    { username: 'lopwd', name: "Lop Word Days", password: '4LRSLoFFZGkULy', is_admin: false },
-    { username: 'cobine', name: "Coby Nine", password: 'aV96g2QCz6JHXM', is_admin: false },
-    { username: 'poles', name: "Pole Sid", password: 'Q4ZXw8N995MQF7', is_admin: false },
-    { username: 'qtif', name: "Quark Tile", password: 'GvCUuZ335Z8eEZ', is_admin: false },
-    { username: 'npdal', name: "Neri Pol Dale", password: 'DeiGMTq62frpYu', is_admin: false },
-    { username: 'defas', name: "Dean Faso", password: 'Gqt2toP5gLBG5m', is_admin: false },
-]
+async function getUsers() {
+     return [
+        { username: 'aaron', name: "Aaron S", passwordHash: await argon2.hash('q584NcNFrMSzT7'), is_admin: true },
+        { username: 'john', name: "John Led", passwordHash: await argon2.hash('3LLt7b2uiCNRUB'), is_admin: true },
+        { username: 'davidf', name: "David Finder", passwordHash: await argon2.hash('bzQPH49gKXZSAN'), is_admin: false },
+        { username: 'alfied', name: "Alfie Dops", passwordHash: await argon2.hash('PtPRy9njx3imGP'), is_admin: false },
+        { username: 'lopwd', name: "Lop Word Days", passwordHash: await argon2.hash('4LRSLoFFZGkULy'), is_admin: false },
+        { username: 'cobine', name: "Coby Nine", passwordHash: await argon2.hash('aV96g2QCz6JHXM'), is_admin: false },
+        { username: 'poles', name: "Pole Sid", passwordHash: await argon2.hash('Q4ZXw8N995MQF7'), is_admin: false },
+        { username: 'qtif', name: "Quark Tile", passwordHash: await argon2.hash('GvCUuZ335Z8eEZ'), is_admin: false },
+        { username: 'npdal', name: "Neri Pol Dale", passwordHash: await argon2.hash('DeiGMTq62frpYu'), is_admin: false },
+        { username: 'defas', name: "Dean Faso", passwordHash: await argon2.hash('Gqt2toP5gLBG5m'), is_admin: false },
+    ]
+}
 
-let tickets = [
-]
+async function getTickets(users) {
 
-for (let i = 0; i < 20; i++) {
-    tickets.push({
-        severity: Math.floor(Math.random() * 5) + 1,
-        requester: users[Math.floor(Math.random() * users.length)].username,
-        assignee: Math.random() > 0.3 ? users[Math.floor(Math.random() * users.length)].username : null,
-        title: lorem.generateSentences(1),
-        message: lorem.generateParagraphs(1),
-        created_at: Date.now() - Math.floor(Math.random() * 1000000001),
-        resolved: Math.random() > 0.8 ? true : false
-    })
+    let tickets = [
+    ]
+
+    for (let i = 0; i < 20; i++) {
+        tickets.push({
+            severity: Math.floor(Math.random() * 5) + 1,
+            requester: users[Math.floor(Math.random() * users.length)].username,
+            assignee: Math.random() > 0.3 ? users[Math.floor(Math.random() * users.length)].username : null,
+            title: lorem.generateSentences(1),
+            message: lorem.generateParagraphs(1),
+            created_at: Date.now() - Math.floor(Math.random() * 1000000001),
+            resolved: Math.random() > 0.8 ? true : false
+        })
+    }
+
+    return tickets
 }
 
 async function createTables() {
@@ -52,13 +60,13 @@ async function createTables() {
     try {
         await knexClient.schema
             .createTable('users', (table) => {
-                table.string('username').notNullable().unique().primary();
-                table.string('name').notNullable()
-                table.string('password').notNullable();
+                table.string('username', 32).notNullable().unique().primary();
+                table.string('name', 32).notNullable()
+                table.string('passwordHash').notNullable();
                 table.boolean('is_admin').defaultTo(false)
             })
             .createTable('user_sessions', (table) => {
-                table.string('username').notNullable()
+                table.string('username', 32).notNullable()
                 table.foreign('username').references('users.username');
                 table.string('token').notNullable().unique().primary();
                 table.timestamp('created_at').notNullable();
@@ -66,20 +74,22 @@ async function createTables() {
             })
             .createTable('tickets', (table) => {
                 table.increments('id').primary()
-                table.integer('severity').notNullable()
-                table.string('requester').notNullable()
+                table.tinyint('severity', 1).notNullable()
+                table.string('requester', 32).notNullable()
                 table.foreign('requester').references('users.username')
-                table.string('assignee')
+                table.string('assignee', 32)
                 table.foreign('assignee').references('users.username')
-                table.string('title').notNullable()
+                table.string('title', 32).notNullable()
                 table.string('message').notNullable()
                 table.boolean('resolved').defaultTo(false)
                 table.timestamp('created_at').notNullable()
             })
         
+        const users = await getUsers()
         for await (const user of users) {
             await knexClient('users').insert(user)
         }
+        const tickets = await getTickets(users)
         for await (const ticket of tickets) {
             await knexClient('tickets').insert(ticket)
         }
