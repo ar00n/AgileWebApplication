@@ -33,14 +33,15 @@ TicketCut or originally AgileWebApplication is an application website created in
   - tailwindcss
 - Database
   - knex
-  - better-sqlite3
-  - mysql
-  - mysql2
-  - oracledb
-  - pg
-  - pg-query-stream
   - sqlite3
-  - tedious
+  - better-sqlite3
+  - Only present to satisfy knex dependencies, not used:
+    - mysql
+    - mysql2
+    - oracledb
+    - pg
+    - pg-query-stream
+    - tedious
 - Database Generation
   - lorem-ipsum
 - Linting
