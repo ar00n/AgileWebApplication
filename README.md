@@ -1,6 +1,6 @@
 # AgileWebApplication / TicketCut
 
-TicketCut or originally AgileWebApplication is an application website created in JavaScript, using the Next.JS web framework, that can be used by companies to track issues. It enables the creation of tickets and assignment of personel.
+TicketCut or originally AgileWebApplication is an application website created in JavaScript, using the Next.JS web framework (App Router), that can be used by companies to track issues. It enables the creation of tickets and assignment of personel.
 
 ### Dependencies
 - Web Framework
