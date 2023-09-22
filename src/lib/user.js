@@ -106,7 +106,7 @@ export async function logout () {
       .del()
 
     if (!res) {
-      return logEvent({ success: false, action: 'logout', message: 'User session does not exist.' })
+      return { success: false, action: 'logout', message: 'User session does not exist.' }
     }
 
     cookies().delete('session_username')
@@ -153,16 +153,16 @@ export async function getSessionUser () {
       .first()
 
     if (!res) {
-      return logEvent({ success: false, action: 'getSessionUser', message: 'User session does not exist.' })
+      return { success: false, action: 'getSessionUser', message: 'User session does not exist.' }
     }
 
     if (Date.now() > res.expires_at) {
-      return logEvent({ success: false, action: 'getSessionUser', message: 'User session has expired.' })
+      return { success: false, action: 'getSessionUser', message: 'User session has expired.' }
     } else {
       return { success: true, action: 'getSessionUser', message: 'User session is valid.', username: res.username, isAdmin: res.is_admin }
     }
   } else {
-    return logEvent({ success: false, action: 'getSessionUser', message: 'No session cookies found.' })
+    return { success: false, action: 'getSessionUser', message: 'No session cookies found.' }
   }
 }
 
