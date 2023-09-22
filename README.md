@@ -11,6 +11,7 @@ TicketCut or originally AgileWebApplication is an application website created in
   - react-hook-form
   - @hookform/resolvers
   - zod
+  - zxcvbn
 - UI
   - @radix-ui/react-avatar
   - @radix-ui/react-checkbox
@@ -48,6 +49,9 @@ TicketCut or originally AgileWebApplication is an application website created in
   - eslint
   - eslint-config-next
   - eslint-plugin-react
+  - eslint-config-standard
+- Logging
+  - pino 
 
 All can be found on https://www.npmjs.com/
 
