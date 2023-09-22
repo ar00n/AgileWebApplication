@@ -17,7 +17,7 @@ import AlertBox from '@/components/AlertBox'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 
 const formSchema = z.object({
-    title: z.string().min(1).max(32),
+    title: z.string().min(1).max(64),
     requester: z.string().min(2).max(32),
     severity: z.number().min(1).max(5),
     message: z.string().min(0).max(512)

@@ -18,7 +18,7 @@ import { createTicket } from '@/lib/tickets'
 import AlertBox from '@/components/AlertBox'
  
 const formSchema = z.object({
-  title: z.string().min(1).max(32),
+  title: z.string().min(1).max(64),
   severity: z.number().min(1).max(5),
   message: z.string().min(0).max(512)
 })

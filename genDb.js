@@ -79,7 +79,7 @@ async function createTables() {
                 table.foreign('requester').references('users.username')
                 table.string('assignee', 32)
                 table.foreign('assignee').references('users.username')
-                table.string('title', 32).notNullable()
+                table.string('title', 64).notNullable()
                 table.string('message').notNullable()
                 table.boolean('resolved').defaultTo(false)
                 table.timestamp('created_at').notNullable()

@@ -4,6 +4,7 @@ const argon2 = require('argon2');
 var crypto = require("crypto");
 
 import { cookies } from 'next/headers'
+import { logEvent } from './logging';
 
 const { knexClient } = require("./database");
 
@@ -22,7 +23,7 @@ export async function getUser(username) {
 
 export async function getUserProfile(username) {
     if(!(await getSessionUser()).success) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action:"getUserProfile",  message: "Not logged in."}, username)
     }
 
     try {
@@ -32,18 +33,18 @@ export async function getUserProfile(username) {
             .first()
 
         if(!res) {
-            return {success: false, message: "User does not exist."}
+            return logEvent({success: false, action:"getUserProfile", message: "User does not exist."}, username)
         }
 
-        return {success: true, user: res}
+        return logEvent({success: true, action:"getUserProfile", user: res}, username)
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action:"getUserProfile", message: e.message}, username)
     }
 }
 
 export async function getUserProfiles() {
     if(!(await getSessionUser()).success) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'getUserProfiles', message: "Not logged in."})
     }
 
     try {
@@ -51,12 +52,12 @@ export async function getUserProfiles() {
             .select('username', 'name', 'is_admin')
 
         if(!res) {
-            return {success: false, message: "Users do not exist."}
+            return logEvent({success: false, action: 'getUserProfiles', message: "Users do not exist."})
         }
 
-        return {success: true, users: res}
+        return logEvent({success: true, action: 'getUserProfiles', users: res})
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, message: e.message})
     }
 }
 
@@ -67,12 +68,12 @@ export async function login(username, password) {
 
         if (await argon2.verify(user.passwordHash, password)) {
             await createSession(user.username)
-            return {success: true, message: 'Successful login.'}
+            return logEvent({success: true, action: 'login', message: 'Successful login.'}, username)
         } else {
-            return {success: false, message: 'Incorrect password.'}
+            return logEvent({success: false, action: 'login', message: 'Incorrect password.'}, username)
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'login', message: e.message}, username)
     }
 }
 
@@ -85,12 +86,12 @@ export async function register(username, name, password) {
                 passwordHash: await argon2.hash(password),
             })
 
-        return {success: true, message: "Account created."}
+        return logEvent({success: true, action: 'register', message: "Account created."}, username)
     } catch (e) {
         if (e.code == "SQLITE_CONSTRAINT")
-            return {success: false, message: "Username already exists."}
+            return logEvent({success: false, action: 'register', message: "Username already exists."}, username)
 
-        return {success: false, message: e.code}
+        return logEvent({success: false, action: 'register', message: e.code}, username)
     }
 }
 
@@ -106,15 +107,15 @@ export async function logout() {
             .del()
 
         if (!res) {
-            return {success: false, message: "User session does not exist."}
+            return logEvent({success: false, action: 'logout', message: "User session does not exist."})
         }
 
         cookies().delete('session_username')
         cookies().delete('session_token')
 
-        return {success: true, message: "Logged out."}
+        return logEvent({success: true, action: 'logout', message: "Logged out."})
     } else {
-        return {success: false, message: "No session cookies found."}
+        return logEvent({success: false, action: 'logout', message: "No session cookies found."})
     }
 }
 
@@ -135,6 +136,8 @@ async function createSession(username) {
 
     cookies().set('session_username', username, {expires: expires })
     cookies().set('session_token', token, {expires: expires })
+    
+    logEvent({success: true, action: 'createSession', message: 'Created session.'}, username)
 }
 
 export async function getSessionUser() {
@@ -151,22 +154,22 @@ export async function getSessionUser() {
             .first()
 
         if (!res) {
-            return {success: false, message: "User session does not exist."}
+            return logEvent({success: false, action: 'getSessionUser', message: "User session does not exist."})
         }
 
         if (Date.now() > res.expires_at) {
-            return {success: false, message: "User session has expired."}
+            return logEvent({success: false, action: 'getSessionUser', message: "User session has expired."})
         } else {
-            return {success: true, message: "User session is valid.", username: res.username, isAdmin: res.is_admin}
+            return {success: true, action: 'getSessionUser', message: "User session is valid.", username: res.username, isAdmin: res.is_admin}
         }
     } else {
-        return {success: false, message: "No session cookies found."}
+        return logEvent({success: false, action: 'getSessionUser', message: "No session cookies found."})
     }
 }
 
 export async function setAdmin(username, admin) {
     if(!(await getSessionUser())?.isAdmin) {
-        return {success: false, message: "Only admins can set roles."}
+        return logEvent({success: false, action: 'setAdmin', message: "Only admins can set roles."}, username)
     }
 
     try {
@@ -176,11 +179,11 @@ export async function setAdmin(username, admin) {
             .update({is_admin: admin})
 
         if (!res) {
-            return {success: false, message: "User not found."}
+            return logEvent({success: false, action: 'setAdmin', message: "User not found."}, username)
         } else {
-            return {success: true}
+            return logEvent({success: true, action: 'setAdmin', user: username}, username)
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'setAdmin', message: e.message}, username)
     }
 }

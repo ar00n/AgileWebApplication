@@ -28,10 +28,6 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
-// import dayjs from "dayjs"
-const dayjs = require('dayjs')
-var relativeTime = require('dayjs/plugin/relativeTime')
-dayjs.extend(relativeTime)
 
 export const columns = [
     {

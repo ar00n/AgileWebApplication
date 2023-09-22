@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import zxcvbn from 'zxcvbn'
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -13,9 +14,12 @@ import { getSessionUser, register } from '@/lib/user'
 import AlertBox from '@/components/AlertBox'
  
 const formSchema = z.object({
-  username: z.string().min(2).max(32),
+  username: z.string().min(2).max(32).regex(/^[A-Za-z.0-9]*$/, "Can only contain letters, numbers and full stops."),
   name: z.string().min(2).max(32),
-  password: z.string().min(8).max(32)
+  password: z.string().max(32).refine(
+    data => zxcvbn(data).score > 1,
+    data => ({message: `Password is too weak. ${zxcvbn(data).feedback.warning}`})
+    )
 })
 
 export default function RegisterForm () {

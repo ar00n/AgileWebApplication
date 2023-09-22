@@ -1,27 +1,28 @@
 'use server'
 
+import { logEvent } from "./logging";
 import { getUser, getSessionUser } from "./user";
 
 const { knexClient } = require("./database");
 
 export async function getTickets() {
     if(!(await getSessionUser()).success) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'getTickets', message: "Not logged in."})
     }
 
     try {
         const res = await knexClient.from('tickets')
             .orderBy('created_at', 'desc')
         
-        return {success: true, tickets: res}
+        return logEvent({success: true, action: 'getTickets', tickets: res})
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'getTickets', message: e.message})
     }
 }
 
 export async function getTicket(id) {
     if(!(await getSessionUser()).success) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'getTicket', message: "Not logged in."}, id)
     }
 
     try {
@@ -30,19 +31,19 @@ export async function getTicket(id) {
             .first()
 
         if (!res) {
-            return {success: false, message: "Ticket not found."}
+            return logEvent({success: false, action: 'getTicket', message: "Ticket not found."}, id)
         } else {
-            return {success: true, ticket: res}
+            return logEvent({success: true, action: 'getTicket', ticket: res}, id)
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'getTicket', message: e.message}, id)
     }
 }
 
 export async function createTicket({severity, title, message}) {
     const { success: sessionCheck, username } = await getSessionUser()
     if (!sessionCheck) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'createTicket', message: "Not logged in."})
     }
 
     try {
@@ -56,25 +57,25 @@ export async function createTicket({severity, title, message}) {
             })
 
         if (res) {
-            return {success: true, message: 'Ticket created.', ticket: res[0]}
+            return logEvent({success: true, action: 'createTicket', message: 'Ticket created.', ticket: res[0]})
         } else {
-            return {success: false, message: 'Failed to create ticket.'}
+            return logEvent({success: false, action: 'createTicket', message: 'Failed to create ticket.'})
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'createTicket', message: e.message})
     }
 }
 
 export async function editTicket(id, values) {
     const { success: sessionCheck } = await getSessionUser()
     if (!sessionCheck) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'editTicket', message: "Not logged in."}, id)
     }
 
     try {
         await getUser(values.requester)
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'editTicket', message: e.message}, id)
     }
 
     try {
@@ -88,18 +89,18 @@ export async function editTicket(id, values) {
             })
 
         if (res) {
-            return {success: true, message: 'Ticket modified.', ticket: res[0]}
+            return logEvent({success: true, action: 'editTicket', message: 'Ticket modified.', ticket: res[0]}, id)
         } else {
-            return {success: false, message: 'Failed to create ticket.'}
+            return logEvent({success: false, action: 'editTicket', message: 'Failed to create ticket.'}, id)
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'editTicket', message: e.message}, id)
     }
 }
 
 export async function deleteTicket(id) {
     if(!(await getSessionUser())?.isAdmin) {
-        return {success: false, message: "Only admins can delete tickets."}
+        return logEvent({success: false, action: 'deleteTicket', message: "Only admins can delete tickets."}, id)
     }
 
     try {
@@ -109,18 +110,18 @@ export async function deleteTicket(id) {
             .del()
 
         if (!res) {
-            return {success: false, message: "Ticket not found."}
+            return logEvent({success: false, action: 'deleteTicket', message: "Ticket not found."}, id)
         } else {
-            return {success: true, message: "Ticket deleted."}
+            return logEvent({success: true, action: 'deleteTicket', message: "Ticket deleted."}, id)
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'deleteTicket', message: e.message}, id)
     }
 }
 
 export async function setResolved(id, resolved) {
     if(!(await getSessionUser()).success) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'setResolved', message: "Not logged in."}, id)
     }
 
     try {
@@ -130,25 +131,25 @@ export async function setResolved(id, resolved) {
             .update({resolved: resolved})
 
         if (!res) {
-            return {success: false, message: "Ticket not found."}
+            return logEvent({success: false, action: 'setResolved', message: "Ticket not found."}, id)
         } else {
-            return {success: true}
+            return logEvent({success: true, action: 'setResolved'}, id)
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'setResolved', message: e.message}, id)
     }
 }
 
 export async function setAssignee(id, assignee) {
     if(!(await getSessionUser()).success) {
-        return {success: false, message: "Not logged in."}
+        return logEvent({success: false, action: 'setAssignee', message: "Not logged in."}, {ticket: id, assignee})
     }
 
     if (assignee !== null) {
         try {
             await getUser(assignee)
         } catch (e) {
-            return {success: false, message: e.message}
+            return logEvent({success: false, action: 'setAssignee', message: e.message}, {ticket: id, assignee})
         }
     }
 
@@ -159,11 +160,11 @@ export async function setAssignee(id, assignee) {
             .update({assignee: assignee})
  
         if (!res) {
-            return {success: false, message: "Ticket not found."}
+            return logEvent({success: false, action: 'setAssignee', message: "Ticket not found."}, {ticket: id, assignee})
         } else {
-            return {success: true}
+            return logEvent({success: true, action: 'setAssignee'}, {ticket: id, assignee})
         }
     } catch (e) {
-        return {success: false, message: e.message}
+        return logEvent({success: false, action: 'setAssignee', message: e.message}, {ticket: id, assignee})
     }
 }
