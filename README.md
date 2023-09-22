@@ -1,4 +1,4 @@
-![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/6bb74c71-4a56-407a-b481-f5e69c784571)# AgileWebApplication / TicketCut
+# AgileWebApplication / TicketCut
 
 ![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/70a3bdd5-fd71-4c38-a82b-42f403f00fe6)
 
