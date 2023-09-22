@@ -1,6 +1,9 @@
 # AgileWebApplication / TicketCut
 
+![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/70a3bdd5-fd71-4c38-a82b-42f403f00fe6)
+
 TicketCut or originally AgileWebApplication is an application website created in JavaScript, using the Next.JS web framework (App Router), that can be used by companies to track issues. It enables the creation of tickets and assignment of personel.
+
 
 ### Dependencies
 - Web Framework
@@ -11,6 +14,7 @@ TicketCut or originally AgileWebApplication is an application website created in
   - react-hook-form
   - @hookform/resolvers
   - zod
+  - zxcvbn
 - UI
   - @radix-ui/react-avatar
   - @radix-ui/react-checkbox
@@ -42,12 +46,15 @@ TicketCut or originally AgileWebApplication is an application website created in
     - pg
     - pg-query-stream
     - tedious
-- Database Generation
+- Database Dummy Data Generation
   - lorem-ipsum
 - Linting
   - eslint
   - eslint-config-next
   - eslint-plugin-react
+  - eslint-config-standard
+- Logging
+  - pino 
 
 All can be found on https://www.npmjs.com/
 
@@ -62,6 +69,16 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+
+## Screenshots
+
+![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/728c1e12-ab89-4386-8841-dae0523f8e19)
+![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/7e7a95e2-6248-41c9-845a-60e0b6e46d6f)
+![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/94d7427d-fbe8-487d-8f35-a1c1e75b0890)
+![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/2903022e-7b67-4eb6-9ef7-5b41483abee0)
+![image](https://github.com/ar00n/AgileWebApplication/assets/29901295/c5eb3b35-8307-4551-91d3-c55c02f29dc4)
+
 
 ## Learn More
 
