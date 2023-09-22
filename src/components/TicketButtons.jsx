@@ -1,42 +1,42 @@
-"use client"
+'use client'
 
-import { deleteTicket, setResolved } from "@/lib/tickets";
-import { Button } from "./ui/button";
-import { useState } from "react";
-import AlertBox from "./AlertBox";
-import ShowAdmin from "./ShowAdmin";
-import DestructiveConfirm from "./DestructiveConfirm";
-import TicketEditor from "./TicketEditor";
+import { deleteTicket, setResolved } from '@/lib/tickets'
+import { Button } from './ui/button'
+import { useState } from 'react'
+import AlertBox from './AlertBox'
+import ShowAdmin from './ShowAdmin'
+import DestructiveConfirm from './DestructiveConfirm'
+import TicketEditor from './TicketEditor'
 
-export default function TicketButtons({data}) {
-    const [result, setResult] = useState()
+export default function TicketButtons ({ data }) {
+  const [result, setResult] = useState()
 
-    async function handleResolve(resolved) {
-        const res = await setResolved(data.ticket.id, resolved)
+  async function handleResolve (resolved) {
+    const res = await setResolved(data.ticket.id, resolved)
 
-        if (res.success) {
-            location.reload()
-        } else {
-            setResult(res)
-        }
+    if (res.success) {
+      location.reload()
+    } else {
+      setResult(res)
     }
+  }
 
-    async function handleDelete() {
-        const res = await deleteTicket(data.ticket.id)
-        setResult(res)
+  async function handleDelete () {
+    const res = await deleteTicket(data.ticket.id)
+    setResult(res)
 
-        if (res.success) {
-            setTimeout(() => window.location.href = '/tickets', 1500) 
-        }
+    if (res.success) {
+      setTimeout(() => (window.location.href = '/tickets'), 1500)
     }
+  }
 
-    return (
+  return (
         <>
         <div className="pt-2 flex px-1">
             {
                 data.ticket.resolved
-                ? <Button onClick={() => handleResolve(false)}>Un-resolve</Button>
-                : <Button onClick={() => handleResolve(true)}>Resolve</Button>
+                  ? <Button onClick={() => handleResolve(false)}>Un-resolve</Button>
+                  : <Button onClick={() => handleResolve(true)}>Resolve</Button>
             }
             <TicketEditor ticket={data.ticket} className="ml-1" />
             <ShowAdmin>
@@ -47,9 +47,9 @@ export default function TicketButtons({data}) {
         </div>
         {
             result
-            ? <AlertBox result={result} className="place-self-center mt-4" />
-            : ''
+              ? <AlertBox result={result} className="place-self-center mt-4" />
+              : ''
         }
         </>
-    )
+  )
 }

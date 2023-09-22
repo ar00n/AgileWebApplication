@@ -1,14 +1,13 @@
-"use client"
- 
+'use client'
+
 import React, { useState } from 'react'
 
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
 import { Textarea } from '@/components/ui/textarea'
@@ -17,35 +16,35 @@ import AlertBox from '@/components/AlertBox'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 
 const formSchema = z.object({
-    title: z.string().min(1).max(64),
-    requester: z.string().min(2).max(32),
-    severity: z.number().min(1).max(5),
-    message: z.string().min(0).max(512)
+  title: z.string().min(1).max(64),
+  requester: z.string().min(2).max(32),
+  severity: z.number().min(1).max(5),
+  message: z.string().min(0).max(512)
+})
+
+export default function TicketEditor ({ ticket, ...props }) {
+  const [result, setResult] = useState()
+  const [open, setOpen] = useState()
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: ticket.title,
+      requester: ticket.requester,
+      severity: ticket.severity,
+      message: ticket.message
+    }
   })
 
-export default function TicketEditor({ticket, ...props}) {
-    const [result, setResult] = useState()
-    const [open, setOpen] = useState()
-
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          title: ticket.title,
-          requester: ticket.requester,
-          severity: ticket.severity,
-          message: ticket.message,
-        },
-    })
-
-    async function onSubmit(values) {
-        const res = await editTicket(ticket.id, values)
-        setResult(res)
-        if (res.success) {
-            setTimeout(() => location.reload(), 1000) 
-        }
+  async function onSubmit (values) {
+    const res = await editTicket(ticket.id, values)
+    setResult(res)
+    if (res.success) {
+      setTimeout(() => location.reload(), 1000)
     }
+  }
 
-    return (
+  return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild {...props}>
                 <Button>Edit</Button>
@@ -91,7 +90,7 @@ export default function TicketEditor({ticket, ...props}) {
                                 <FormItem>
                                     <FormLabel>Severity: {value}</FormLabel>
                                     <FormControl>
-                                        <Slider defaultValue={[ticket.severity]} max={5} min={1} step={1} inverted={true} x={value} onValueChange={(e) => {onChange(e[0])}} />
+                                        <Slider defaultValue={[ticket.severity]} max={5} min={1} step={1} inverted={true} x={value} onValueChange={(e) => { onChange(e[0]) }} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -111,14 +110,14 @@ export default function TicketEditor({ticket, ...props}) {
                             )}
                             />
                             {
-                                result ?
-                                <AlertBox result={result} />
-                                : ''
+                                result
+                                  ? <AlertBox result={result} />
+                                  : ''
                             }
                             <Button type="submit" className="float-right">Confirm</Button>
                         </form>
                     </Form>
                 </DialogContent>
             </Dialog>
-    )
+  )
 }

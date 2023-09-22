@@ -1,26 +1,26 @@
-"use client"
+'use client'
 
-import { setAdmin } from "@/lib/user"
-import DestructiveConfirm from "./DestructiveConfirm"
-import ShowAdmin from "./ShowAdmin"
-import { Button } from "./ui/button"
-import { useState } from "react"
-import AlertBox from "./AlertBox"
+import { setAdmin } from '@/lib/user'
+import DestructiveConfirm from './DestructiveConfirm'
+import ShowAdmin from './ShowAdmin'
+import { Button } from './ui/button'
+import { useState } from 'react'
+import AlertBox from './AlertBox'
 
-export default function UserButtons({user}) {
-    const [res, setRes] = useState()
+export default function UserButtons ({ user }) {
+  const [res, setRes] = useState()
 
-    async function handleAdmin() {
-        const res = await setAdmin(user.username, !user.is_admin)
+  async function handleAdmin () {
+    const res = await setAdmin(user.username, !user.is_admin)
 
-        if (res.success) {
-            location.reload()
-        } else {
-            setRes(res)
-        }
+    if (res.success) {
+      location.reload()
+    } else {
+      setRes(res)
     }
-    
-    return (
+  }
+
+  return (
         <>
         <ShowAdmin>
             <DestructiveConfirm action={user.is_admin ? 'remove Admin from this user.' : 'make this user an Admin.'} onConfirmClick={() => handleAdmin()}>
@@ -29,9 +29,9 @@ export default function UserButtons({user}) {
         </ShowAdmin>
         {
             res && !res.success
-            ? <AlertBox result={res} className="place-self-center mt-4" />
-            : ''
+              ? <AlertBox result={res} className="place-self-center mt-4" />
+              : ''
         }
         </>
-    )
+  )
 }

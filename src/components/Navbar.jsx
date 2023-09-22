@@ -1,79 +1,78 @@
-"use client"
+'use client'
 
-import Link from "next/link"
+import Link from 'next/link'
 
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuTrigger,
-    navigationMenuTriggerStyle
-  } from "@/components/ui/navigation-menu"
-import { usePathname } from "next/navigation"
-import { logout, getSessionUser } from "@/lib/user"
-import { useEffect, useState } from "react"
-import { User } from "lucide-react"
-import { Button } from "./ui/button"
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from '@/components/ui/navigation-menu'
+import { usePathname } from 'next/navigation'
+import { logout, getSessionUser } from '@/lib/user'
+import { useEffect, useState } from 'react'
+import { User } from 'lucide-react'
+import { Button } from './ui/button'
 
 const pages = [
-    {
-        name: "Home",
-        href: "/"
-    },
-    {
-        name: "Tickets",
-        href: "/tickets"
-    },
-    {
-        name: "Users",
-        href: "/users"
-    },
+  {
+    name: 'Home',
+    href: '/'
+  },
+  {
+    name: 'Tickets',
+    href: '/tickets'
+  },
+  {
+    name: 'Users',
+    href: '/users'
+  }
 ]
 
-function UserSection() {
-    const [userResult, setUserResult] = useState({})
+function UserSection () {
+  const [userResult, setUserResult] = useState({})
 
-    useEffect(() => {
-        if (userResult.success == null) {
-            getSessionUser().then(res => setUserResult(res))
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    
-
-    async function handleLogout() {
-        const res = await logout()
-
-        if (res.success) {
-            setUserResult({})
-            setTimeout(() => window.location.href = '/', 1500) 
-        }
+  useEffect(() => {
+    if (userResult.success == null) {
+      getSessionUser().then(res => setUserResult(res))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-    if (userResult.username) {
-        return (
+  async function handleLogout () {
+    const res = await logout()
+
+    if (res.success) {
+      setUserResult({})
+      setTimeout(() => (window.location.href = '/'), 1500)
+    }
+  }
+
+  if (userResult.username) {
+    return (
             <NavigationMenuItem>
                 <NavigationMenuTrigger>{userResult.username} <User /></NavigationMenuTrigger>
                 <NavigationMenuContent>
                     <Button variant="destructive" onClick={() => handleLogout()}>Logout</Button>
                 </NavigationMenuContent>
             </NavigationMenuItem>
-        )
-    } else if (userResult.success == false) {
-        return (
+    )
+  } else if (userResult.success === false) {
+    return (
             <div className="space-x-2">
                 <Link href="/register"><Button variant="secondary">Register</Button></Link>
                 <Link href="/login"><Button>Login</Button></Link>
             </div>
-        )
-    }
+    )
+  }
 }
 
-export default function Navbar() {
-    const pathname = usePathname()
+export default function Navbar () {
+  const pathname = usePathname()
 
-    return (
+  return (
         <div className="p-2 w-full shadow-lg flex list-none bg-white text-black">
             <div>
                 <NavigationMenu>
@@ -97,5 +96,5 @@ export default function Navbar() {
                 </NavigationMenu>
             </div>
         </div>
-    )
+  )
 }

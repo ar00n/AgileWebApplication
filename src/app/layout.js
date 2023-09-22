@@ -6,10 +6,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'TicketCut',
-  description: 'Demonstration ticketing website.',
+  description: 'Demonstration ticketing website.'
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout ({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className}`}>

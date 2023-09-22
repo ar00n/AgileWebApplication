@@ -1,30 +1,30 @@
-import AssigneeEdit from "@/components/AssigneeEdit"
-import AlertBox from "@/components/AlertBox"
-import TicketButtons from "@/components/TicketButtons"
-import { getTicket } from "@/lib/tickets"
-import { Check, CornerRightUp, X } from "lucide-react"
+import AssigneeEdit from '@/components/AssigneeEdit'
+import AlertBox from '@/components/AlertBox'
+import TicketButtons from '@/components/TicketButtons'
+import { getTicket } from '@/lib/tickets'
+import { Check, CornerRightUp, X } from 'lucide-react'
 const dayjs = require('dayjs')
-var localizedFormat = require('dayjs/plugin/localizedFormat')
+const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
 export default async function TicketView ({ params }) {
-    if(isNaN(Number(params.id))) {
-        return <div className="absolute w-full grid place-content-center"><AlertBox message="Invalid ticket ID." /></div>
-    } 
+  if (isNaN(Number(params.id))) {
+    return <div className="absolute w-full grid place-content-center"><AlertBox message="Invalid ticket ID." /></div>
+  }
 
-    const data = await getTicket(params.id)
+  const data = await getTicket(params.id)
 
-    if (!data.success) {
-        return <div className="absolute w-full grid place-content-center"><AlertBox result={data} /></div>
-    }
+  if (!data.success) {
+    return <div className="absolute w-full grid place-content-center"><AlertBox result={data} /></div>
+  }
 
-    return (
+  return (
         <div className="grid place-content-center sm:mt-16 ">
             <div className="flex">
                 {
                     data.ticket.resolved
-                    ? <><Check stroke="green" /><p className="text-green-600">Resolved</p></>
-                    : <><X stroke="red" /><p className="text-red-500">Unresolved</p></>
+                      ? <><Check stroke="green" /><p className="text-green-600">Resolved</p></>
+                      : <><X stroke="red" /><p className="text-red-500">Unresolved</p></>
                 }
                 <a href="/tickets" className="flex text-xs items-end ml-auto">view all tickets<CornerRightUp size={18} /></a>
             </div>
@@ -42,5 +42,5 @@ export default async function TicketView ({ params }) {
             </div>
             <TicketButtons data={data} />
         </div>
-    )
+  )
 }

@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { Button } from "./ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
-import { AlertCircle } from "lucide-react"
+import { useState } from 'react'
+import { Button } from './ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
+import { AlertCircle } from 'lucide-react'
 
-export default function DestructiveConfirm({children, action, onConfirmClick, ...props}) {
-    const [open, setOpen] = useState(false)
+export default function DestructiveConfirm ({ children, action, onConfirmClick, ...props }) {
+  const [open, setOpen] = useState(false)
 
-    function handleClick(e) {
-        e.stopPropagation()
+  function handleClick (e) {
+    e.stopPropagation()
 
-        setOpen(true)
-    }
+    setOpen(true)
+  }
 
-    return (
+  return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-[425px]">
@@ -27,12 +27,12 @@ export default function DestructiveConfirm({children, action, onConfirmClick, ..
                             You are about to {action}
                         </DialogDescription>
                     </DialogHeader>
-                    <Button type="submit" variant="destructive" className="place-self-center max-w-max" onClick={() => {setOpen(false); onConfirmClick()}}>Confirm</Button>
+                    <Button type="submit" variant="destructive" className="place-self-center max-w-max" onClick={() => { setOpen(false); onConfirmClick() }}>Confirm</Button>
                 </DialogContent>
             </Dialog>
             <div {...props} onClick={handleClick}>
                 {children}
             </div>
         </>
-    )
+  )
 }

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   flexRender,
@@ -6,131 +6,131 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, ShieldCheck, User } from "lucide-react"
+  useReactTable
+} from '@tanstack/react-table'
+import { ArrowUpDown, ChevronDown, ShieldCheck, User } from 'lucide-react'
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { useState } from "react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
+  TableRow
+} from '@/components/ui/table'
+import { useState } from 'react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 
 export const columns = [
-    {
-      accessorKey: "name",
-      header: ({ column }) => {
-        return (
+  {
+    accessorKey: 'name',
+    header: ({ column }) => {
+      return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Name
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
-      },
-      cell: ({ row }) => (
-        <div><a href={`/users/${row.getValue("username")}`}>{row.getValue("name")}</a></div>
-      ),
+      )
     },
-    {
-        accessorKey: "username",
-        header: ({ column }) => {
-          return (
+    cell: ({ row }) => (
+        <div><a href={`/users/${row.getValue('username')}`}>{row.getValue('name')}</a></div>
+    )
+  },
+  {
+    accessorKey: 'username',
+    header: ({ column }) => {
+      return (
             <Button
               variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
               Username
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
-          )
-        },
-        cell: ({ row }) => (
-          <div><a href={`/users/${row.getValue("username")}`}>@{row.getValue("username")}</a></div>
-        ),
-      },
-      {
-        accessorKey: "is_admin",
-        id: "role",
-        header: ({ column }) => {
-          return (
+      )
+    },
+    cell: ({ row }) => (
+          <div><a href={`/users/${row.getValue('username')}`}>@{row.getValue('username')}</a></div>
+    )
+  },
+  {
+    accessorKey: 'is_admin',
+    id: 'role',
+    header: ({ column }) => {
+      return (
             <Button
               variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
               Role
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
-          )
-        },
-        cell: ({ row }) => (
+      )
+    },
+    cell: ({ row }) => (
           <TooltipProvider>
               <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                       {
-                          row.getValue("role")
-                          ? <ShieldCheck className="ml-1" size={24} stroke="#176f9b" fill="lightblue" />
-                          : <User className="ml-1" size={24} stroke="#176f9b" fill="lightblue" />
+                          row.getValue('role')
+                            ? <ShieldCheck className="ml-1" size={24} stroke="#176f9b" fill="lightblue" />
+                            : <User className="ml-1" size={24} stroke="#176f9b" fill="lightblue" />
                       }
                   </TooltipTrigger>
                   <TooltipContent>
-                  <p>{row.getValue("role") ? 'Admin' : 'User'}</p>
+                  <p>{row.getValue('role') ? 'Admin' : 'User'}</p>
                   </TooltipContent>
               </Tooltip>
           </TooltipProvider>
-        )
-      },
-  ]
-
-export default function UserTable({data}) {
-    const [sorting, setSorting] = useState([])
-    const [columnFilters, setColumnFilters] = useState(
-      []
     )
-    const [columnVisibility, setColumnVisibility] =
+  }
+]
+
+export default function UserTable ({ data }) {
+  const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState(
+    []
+  )
+  const [columnVisibility, setColumnVisibility] =
       useState({})
-  
-    const table = useReactTable({
-      data,
-      columns,
-      onSortingChange: setSorting,
-      onColumnFiltersChange: setColumnFilters,
-      getCoreRowModel: getCoreRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      onColumnVisibilityChange: setColumnVisibility,
-      state: {
-        sorting,
-        columnFilters,
-        columnVisibility,
-      },
-    })
-  
-    return (
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility
+    }
+  })
+
+  return (
       <div className="w-full grid">
         <div className="p-6 max-w-max place-self-center">
           <div className="flex items-center py-4">
             <Input
               placeholder="Filter name..."
-              value={(table.getColumn("name")?.getFilterValue()) ?? ""}
+              value={(table.getColumn('name')?.getFilterValue()) ?? ''}
               onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
+                table.getColumn('name')?.setFilterValue(event.target.value)
               }
               className="max-w-sm"
             />
@@ -174,9 +174,9 @@ export default function UserTable({data}) {
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                         </TableHead>
                       )
                     })}
@@ -184,8 +184,9 @@ export default function UserTable({data}) {
                 ))}
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
+                {table.getRowModel().rows?.length
+                  ? (
+                      table.getRowModel().rows.map((row) => (
                     <TableRow
                       key={row.id}
                     >
@@ -198,8 +199,9 @@ export default function UserTable({data}) {
                         </TableCell>
                       ))}
                     </TableRow>
-                  ))
-                ) : (
+                      ))
+                    )
+                  : (
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
@@ -208,7 +210,7 @@ export default function UserTable({data}) {
                       No results.
                     </TableCell>
                   </TableRow>
-                )}
+                    )}
               </TableBody>
             </Table>
           </div>
@@ -234,5 +236,5 @@ export default function UserTable({data}) {
           </div>
         </div>
       </div>
-    )
-  }
+  )
+}
