@@ -43,7 +43,7 @@ TicketCut or originally AgileWebApplication is an application website created in
     - pg
     - pg-query-stream
     - tedious
-- Database Generation
+- Database Dummy Data Generation
   - lorem-ipsum
 - Linting
   - eslint
