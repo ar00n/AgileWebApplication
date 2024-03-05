@@ -60,10 +60,10 @@ export default function LoginForm () {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
                         control={form.control}
-                        name="username22"
+                        name="username"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>Username22</FormLabel>
+                            <FormLabel>Username</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
