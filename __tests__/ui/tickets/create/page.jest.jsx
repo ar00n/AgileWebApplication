@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
-import CreateTicketForm from '../../../src/app/tickets/create/page'
+import CreateTicketForm from '../../../../src/app/tickets/create/page'
 import { useRouter } from 'next/navigation'
 
 import { createTicket } from '@/lib/tickets'

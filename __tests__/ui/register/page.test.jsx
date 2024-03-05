@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
-import RegisterForm from '../../src/app/register/page'
+import RegisterForm from '../../../src/app/register/page'
 import * as userLib from '@/lib/user'
 
 jest.mock('@/lib/user')

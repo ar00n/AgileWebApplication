@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, screen } from '@testing-library/react'
-import Tickets from '../../src/app/tickets/page'
+import Tickets from '../../../src/app/tickets/page'
 import * as ticketsLib from '@/lib/tickets'
 
 jest.mock('@/lib/tickets')

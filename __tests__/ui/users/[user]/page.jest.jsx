@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import UserProfile from '../../../src/app/users/[user]/page'
+import UserProfile from '../../../../src/app/users/[user]/page'
 import { getUserProfile } from '@/lib/user'
 import { getSessionUser } from '@/lib/user'
 

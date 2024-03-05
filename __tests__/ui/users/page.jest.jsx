@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, waitFor, screen } from '@testing-library/react'
-import Users from '../../src/app/users/page'
+import Users from '../../../src/app/users/page'
 import { getUserProfiles } from '@/lib/user'
 
 jest.mock('@/lib/user')

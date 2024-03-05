@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, screen } from '@testing-library/react'
-import TicketView from '../../../src/app/tickets/[id]/page'
+import TicketView from '../../../../src/app/tickets/[id]/page'
 import { act } from 'react-dom/test-utils'
 
 import * as ticketsLib from '@/lib/tickets'
