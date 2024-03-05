@@ -7,5 +7,6 @@ export NVM_DIR="$HOME/.nvm"
 cd /home/ec2-user/AgileWebApplication/
 git pull origin main
 npm install &&
+npm run test &&
 npm run build &&
 pm2 restart AgileWebApplication
