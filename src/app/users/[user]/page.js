@@ -38,8 +38,8 @@ export default async function UserProfile ({ params }) {
                                     <TooltipTrigger asChild>
                                         {
                                             res.user.is_admin
-                                              ? <ShieldCheck className="ml-1" size={24} stroke="#176f9b" fill="lightblue" />
-                                              : <User className="ml-1" size={24} stroke="#176f9b" fill="lightblue" />
+                                              ? <ShieldCheck className="ml-1" size={24} stroke="#176f9b" fill="lightblue" data-testid="admin-icon" />
+                                              : <User className="ml-1" size={24} stroke="#176f9b" fill="lightblue" data-testid="user-icon" />
                                         }
                                     </TooltipTrigger>
                                     <TooltipContent>

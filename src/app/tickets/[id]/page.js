@@ -9,7 +9,7 @@ dayjs.extend(localizedFormat)
 
 export default async function TicketView ({ params }) {
   if (isNaN(Number(params.id))) {
-    return <div className="absolute w-full grid place-content-center"><AlertBox message="Invalid ticket ID." /></div>
+    return <div className="absolute w-full grid place-content-center"><AlertBox result={{ success: false, message: 'Invalid ticket ID.' }} /></div>
   }
 
   const data = await getTicket(params.id)
