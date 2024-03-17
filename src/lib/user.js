@@ -144,6 +144,8 @@ export async function getSessionUser () {
   const username = cookieStore.get('session_username')
   const token = cookieStore.get('session_token')
 
+  console.log('cookieStore', cookieStore)
+
   if (username && token) {
     const res = await knexClient.from('user_sessions')
       .where('user_sessions.token', token.value)
