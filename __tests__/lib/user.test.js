@@ -46,7 +46,7 @@ describe('getSessionUser', () => {
     expect(result).toEqual({
       success: false,
       action: 'getSessionUser',
-      message: 'User session does not exist.'
+      message: 'No session cookies found.'
     })
   })
 
