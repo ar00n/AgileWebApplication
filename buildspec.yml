@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+    commands:
+      # Install project dependencies
+      - node -v
+      - npm i
+
+  build:
+    commands:
+      # Build the Next.js app
+      - npm run build
+
+artifacts:
+  files:
+    - '**/*'
+
+# We are keeping our artifacts in S3 bucket 
