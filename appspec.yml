@@ -1,7 +1,29 @@
 version: 0.0
 os: linux
+
+files:
+  - source: /
+    destination: /home/ec2-user/AgileWebApplication/
+    overwrite: true
+file_exists_behavior: OVERWRITE
+
+permissions:
+  - object: /home/ec2-user/AgileWebApplication/scripts/
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: 777
+    type : 
+      - file
+
+
 hooks:
+
+  BeforeInstall:
+
+  AfterInstall:
+
   ApplicationStart:
-    - location: deploy.sh
-      timeout: 300
+    - location: scripts/restart.sh
+      timeout: 2500
       runas: ec2-user
