@@ -11,6 +11,8 @@ phases:
 
   build:
     commands:
+      # Run the tests
+      - npm run test
       # Build the Next.js app
       - npm run build
 
