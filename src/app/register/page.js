@@ -30,7 +30,7 @@ export default function RegisterForm () {
     getSessionUser().then(res => {
       setLoggedIn(res.success)
       if (res.success) {
-        setTimeout(() => (window.location.href = '/'), 1500)
+        window.location.href = '/tickets'
       }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,11 +57,11 @@ export default function RegisterForm () {
     return
   }
 
-  return loggedIn && result == null
-    ? <div className="absolute w-full grid place-content-center">
-                <AlertBox result={{ success: false, message: 'Already logged in.' }} />
-            </div>
-    : <div className='p-6'>
+  // return loggedIn && result == null
+  //   ? <div className="absolute w-full grid place-content-center">
+  //               <AlertBox result={{ success: false, message: 'Already logged in.' }} />
+  //           </div>
+  return <div className='p-6'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
