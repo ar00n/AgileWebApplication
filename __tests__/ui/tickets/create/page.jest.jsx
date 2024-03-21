@@ -50,7 +50,6 @@ describe('CreateTicketForm', () => {
 
     expect(screen.getByPlaceholderText('Title')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('Message')).toBeInTheDocument()
-    // Assuming the severity field is a range input
     expect(screen.getByRole('slider')).toBeInTheDocument()
   })
 
@@ -70,7 +69,7 @@ describe('CreateTicketForm', () => {
       expect(createTicket).toHaveBeenCalledWith({
         title: 'Test title',
         message: 'Test message',
-        severity: 5 // assuming this is the default value
+        severity: 5
       })
     })
   })

@@ -28,7 +28,6 @@ describe('Tickets', () => {
   })
 
   it('should render TicketTable when getTickets is successful', async () => {
-    // const mockTickets = [{ id: 1, name: 'Ticket 1' }, { id: 2, name: 'Ticket 2' }]
     const dummyData = Array.from({ length: 10 }, (_, index) => ({
       id: index + 1,
       severity: Math.floor(Math.random() * 5) + 1,
